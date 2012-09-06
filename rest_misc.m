@@ -299,7 +299,7 @@ function ViewROI(AROIDef)
 			hFig =figure('Name', AROIDef, 'NumberTitle', 'off'); 
 			plot(1:length(AROITimeCourse), AROITimeCourse);
 			title(AROIDef);
-		elseif strcmpi(ext, '.img')
+		elseif strcmpi(ext, '.img') || strcmpi(ext, '.nii') || strcmpi(ext, '.gz')
 			%The ROI definition is a mask file
 			%maskROI =rest_loadmask(nDim1, nDim2, nDim3, AROIDef);		
 			rest_sliceviewer('ShowOverlay', AROIDef);
