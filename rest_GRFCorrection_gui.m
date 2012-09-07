@@ -331,3 +331,21 @@ function check_warning(UIcontrol)
         pause(0.1);
         set(UIcontrol , 'BackgroundColor' , 'White');
         pause(0.1);
+        
+        
+function two_tail_Callback(hObject, eventdata, handles)
+
+
+
+% --- Executes when selected object is changed in tail_panel.
+function tail_panel_SelectionChangeFcn(hObject, eventdata, handles)
+% hObject    handle to the selected object in tail_panel 
+% eventdata  structure with the following fields (see UIBUTTONGROUP)
+%	EventName: string 'SelectionChanged' (read only)
+%	OldValue: handle of the previously selected object or empty if none was selected
+%	NewValue: handle of the currently selected object
+% handles    structure with handles and user data (see GUIDATA)
+is_two_tag=get(handles.two_tail , 'Value');
+if is_two_tag
+   uiwait(msgbox('The "two-tailed" option is doing as following (e.g., if set VoxelPThreshold = 0.01 and cluster level p<0.05): 1) Get Group A > Group B, set Z>2.576 (two-tailed p <0.01) and cluster level p<0.025  2) Get Group A < Group B, set a Z<-2.576 (two-tailed p <0.01) and cluster level p<0.025.  3) Add 1 and 2 together, which could ensure the total p<0.5.','Two-tailed')); 
+end

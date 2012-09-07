@@ -22,7 +22,7 @@ function varargout = rest_GRF_for_sliceview(varargin)
 
 % Edit the above text to modify the response to help rest_GRF_for_sliceview
 
-% Last Modified by GUIDE v2.5 15-Aug-2012 00:07:57
+% Last Modified by GUIDE v2.5 07-Sep-2012 23:40:51
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -224,3 +224,18 @@ handles.Is_two_tail=get(handles.Two_tail_radiobutton,'Value');
 guidata(hObject, handles);
 
 uiresume(handles.fig_GRFCorrection_SliceViewer);
+
+
+% --- Executes when selected object is changed in uipanel1.
+function uipanel1_SelectionChangeFcn(hObject, eventdata, handles)
+% hObject    handle to the selected object in uipanel1 
+% eventdata  structure with the following fields (see UIBUTTONGROUP)
+%	EventName: string 'SelectionChanged' (read only)
+%	OldValue: handle of the previously selected object or empty if none was selected
+%	NewValue: handle of the currently selected object
+% handles    structure with handles and user data (see GUIDATA)
+
+is_two_tag=get(handles.Two_tail_radiobutton , 'Value');
+if is_two_tag
+   uiwait(msgbox('The "two-tailed" option is doing as following (e.g., if set VoxelPThreshold = 0.01 and cluster level p<0.05): 1) Get Group A > Group B, set Z>2.576 (two-tailed p <0.01) and cluster level p<0.025  2) Get Group A < Group B, set a Z<-2.576 (two-tailed p <0.01) and cluster level p<0.025.  3) Add 1 and 2 together, which could ensure the total p<0.5.','Two-tailed')); 
+end

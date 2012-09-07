@@ -3732,8 +3732,12 @@ function Result =Overlay_Misc(AConfig)
             [BrainNetViewerPath, fileN, extn] = fileparts(which('BrainNet.m'));
             SurfFileName=[BrainNetViewerPath,filesep,'Data',filesep,'SurfTemplate',filesep,'BrainMesh_ICBM152.nv'];
             viewtype='MediumView';
-            NMax = min(AConfig.Overlay.VolumeThrd(:));
-            PMax = max(AConfig.Overlay.VolumeThrd(:));
+%             NMax = min(AConfig.Overlay.VolumeThrd(:));
+%             PMax = max(AConfig.Overlay.VolumeThrd(:));
+%             
+            NMax=AConfig.Overlay.MinNegative;
+            PMax=AConfig.Overlay.MaxPositive;
+            
 
             H_BrainNet = rest_CallBrainNetViewer(AConfig.Overlay.VolumeThrd,-AConfig.Overlay.ValueThrdAbsolute,AConfig.Overlay.ValueThrdAbsolute,0,18,SurfFileName,viewtype,AConfig.Overlay.Colormap,NMax,PMax,AConfig.Overlay.Header);
             %H_BrainNet = rest_CallBrainNetViewer(BrainVolume,NMin,PMin,ClusterSize,ConnectivityCriterion,SurfFileName,viewtype,ColorMap,NMax,PMax,BrainHeader)
