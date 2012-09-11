@@ -180,11 +180,29 @@ outname=get(handles.edtOutName,'String');
 ImgFileList ={};
 for i=1:size(handles.Cfg.DataDirs, 1)	
     theFileList = dir(fullfile(handles.Cfg.DataDirs{i},'*.hdr'));	
-	for x = 1:size(struct2cell(theFileList),2)
-	    if strcmpi(theFileList(x).name(end-3:end), '.hdr') 
+	if ~isempty(theFileList)
+		for x = 1:size(struct2cell(theFileList),2)
+			if strcmpi(theFileList(x).name(end-3:end), '.hdr') 
 				ImgFileList=[ImgFileList; {[handles.Cfg.DataDirs{i},filesep,theFileList(x).name(1:end-4),'.img']}];
-	    end
-    end
+			end
+		end
+	else	%Add *.nii and *.nii.gz support 20120911 by Sandy
+		theFileList = dir(fullfile(handles.Cfg.DataDirs{i},'*.nii'));
+		if ~isempty(theFileList)
+			for x=1:size(struct2cell(theFileList),2)
+				ImgFileList=[ImgFileList ; {[handles.Cfg.DataDirs{i},filesep,theFileList(x).name]}];
+			end
+		else
+			theFileList = dir(fullfile(handles.Cfg.DataDirs{i},'*.nii.gz'));
+			if ~isempty(theFileList)
+				for x=1:size(struct2cell)
+					ImgFile=[ImgFileList ; {[handles.Cfg.DataDirs{i},filesep,theFileList(x).name]}];
+				end
+			else
+				errordlg(sprintf('Please check %s, there is no dataset in it' , handles.Cfg.DataDirs{i} , 'NO DATASET!'));
+			end	
+		end
+	end
 end
 
 for i=1:length(ImgFileList)
@@ -198,10 +216,10 @@ for i=1:length(ImgFileList)
     IndexFilesep = strfind(ImgFileList{i}, filesep);
     if ~isempty(IndexFilesep)
         DirNameTemp=ImgFileList{i}(IndexFilesep(end-1)+1:IndexFilesep(end)-1);
-        PO=[handles.Cfg.OutputDir,filesep,DirNameTemp,'_',outname,filesep,outname,'_',fileN,'.img'];
+        PO=[handles.Cfg.OutputDir,filesep,DirNameTemp,'_',outname,filesep,outname,'_',fileN,'.nii'];%Change default data format to Nifti 20120911 by Sandy
         mkdir(fileparts(PO));
     else
-        PO=[handles.Cfg.OutputDir,filesep,outname,'_',fileN,'.img'];
+        PO=[handles.Cfg.OutputDir,filesep,outname,'_',fileN,'.nii'];%Change default data format to Nifti 20120911 by Sandy
     end
     rest_ResliceImage(ImgFileList{i},PO,NewVoxSize,hld, TargetSpace);
 end
