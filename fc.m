@@ -207,7 +207,7 @@ function [ResultMaps] = fc(ADataDir,AMaskFilename, AROIDef,AResultFilename, ACov
                 %The ROI definition is a Ball definition
                 maskROI =rest_SphereROI( 'BallDefinition2Mask' , AROIDef{x}, BrainSize, VoxelSize, Header);
 		
-            elseif exist(AROIDef,'file')==2	% Make sure the Definition file exist
+            elseif exist(AROIDef{x},'file')==2	% Make sure the Definition file exist
                 [pathstr, name, ext] = fileparts(AROIDef{x});
 			
                 if strcmpi(ext, '.txt'),
