@@ -293,7 +293,8 @@ function Default_radiobutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if get(handles.Default_radiobutton , 'Value')
-    set(handles.nomask_radiobutton , 'Value' , 0);
+    set(handles.nomask_radiobutton , 'Enable' , 'On' ,'Value' , 0);
+    set(handles.Default_radiobutton, 'Enable', 'inactive');
     set(handles.mask_entry , 'Enable' , 'Off' , 'String' , 'Default Mask');
 end
 % Hint: get(hObject,'Value') returns toggle state of Default_radiobutton
@@ -305,7 +306,8 @@ function nomask_radiobutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if get(handles.nomask_radiobutton , 'Value')
-    set(handles.Default_radiobutton , 'Value' , 0);
+    set(handles.Default_radiobutton , 'Enable' , 'On' , 'Value' , 0);
+    set(handles.nomask_radiobutton  , 'Enable', 'inactive');
     set(handles.mask_entry , 'Enable' , 'Off' , 'String' , 'Don''t use any mask');
 end
 % Hint: get(hObject,'Value') returns toggle state of nomask_radiobutton
@@ -325,8 +327,8 @@ function mask_pushbutton_Callback(hObject, eventdata, handles)
     cd(current_directory);
     mask_entry=[mask_pathname,mask_filename];
     if ischar(mask_entry)
-        set(handles.Default_radiobutton , 'Value' , 0);
-        set(handles.nomask_radiobutton , 'Value' , 0);
+        set(handles.Default_radiobutton , 'Enable' , 'On' , 'Value' , 0);
+        set(handles.nomask_radiobutton  , 'Enable' , 'On' , 'Value' , 0);
         set(handles.mask_entry , 'String' , mask_entry);
         if strcmp(upper(get(handles.mask_entry , 'Enable')) , 'OFF')
             set(handles.mask_entry , 'Enable' , 'On');
@@ -1046,6 +1048,7 @@ try
     end
     pause(0.01)
     %Calculate VMHC
+    mPF_list=[];
     for i=1:size(PF_inputdata ,1) 
         [input_path , input_name , input_ext]=fileparts(PF_inputdata{i});
         if i==1
@@ -1073,7 +1076,7 @@ try
                                 '',              ...%data, see rest_VMHC.m
                                 '',              ...Header
                                 CUTNUMBER);
-        if fisherz_tag
+        if fisherz_tag && iscell(mPF_list)
             image_size=size(VMHCBrain);
             voxel_size=sqrt(sum(Header.mat(1:3,1:3).^2));
             VMHCBrain=0.5 * log(1+VMHCBrain)./(1-VMHCBrain);
