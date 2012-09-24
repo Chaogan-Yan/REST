@@ -965,7 +965,7 @@ function btnComputeGCA_Callback(hObject, eventdata, handles)
               	 
                 if strcmpi(handles.Cfg.WantZtransformation, 'Yes'),
                     cd (theOutputDir)
-                    Filelist = dir('GCA_*.img');
+                    Filelist = dir('GCA_*.nii'); % YAN Chao-GAN 120923.
                     for i=1:length(Filelist),
                         theOrigGCAMap = Filelist(i).name;
 					    theMeanGCAMap = ['Z',theOrigGCAMap];
