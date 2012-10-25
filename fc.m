@@ -66,7 +66,7 @@ function [ResultMaps] = fc(ADataDir,AMaskFilename, AROIDef,AResultFilename, ACov
 					end
 					theROITimeCourses(:, x) =tmpX;
 					IsDefinedROITimeCourse =1;
-				elseif strcmpi(ext, '.img')
+				elseif strcmpi(ext, '.img') || strcmpi(ext, '.nii') || strcmpi(ext, '.nii.gz')   %YAN Chao-Gan, 121020.   elseif strcmpi(ext, '.img')
 					%The ROI definition is a mask file
 					maskROI =rest_loadmask(nDim1, nDim2, nDim3, AROIDef{x});		
 				else
