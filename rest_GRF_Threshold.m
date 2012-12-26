@@ -13,6 +13,7 @@ function [Data_Corrected, ClusterSize, Header]=rest_GRF_Threshold(StatsImgFile,V
 %                       - 'DO NOT OUTPUT IMAGE': means called by rest_sliceviewer, and do not need to write into a file.
 %     MaskFile          - The mask file name. If empty (i.e., ''), then all voxels are included.
 %     Flag              - 'Z', 'T', 'F' or 'R'. Indicate the type of the input statistical image
+%                       - If not defined or defined as empty, then will read the statistical type and degree of freedom information from the image (if the statistical analysis was performed with REST or SPM).
 %     Df1               - The degree of freedom of the statistical image. For F statistical image, there is also Df2
 %     Df2               - The second degree of freedom of F statistical image
 %     VoxelSize         - The Voxel's size of the image inputed. Defined when call by rest_sliceviewer.
@@ -42,16 +43,55 @@ else
     end
 end
 
+
+%Added by YAN Chao-Gan 121222. Detect the Flag and DF from the data if Flag is not defined.
+if (~exist('Flag','var')) || (exist('Flag','var') && isempty(Flag))
+    
+    if ischar(StatsImgFile)
+        [Data VoxelSize Header]=rest_readfile(StatsImgFile);
+    end
+    
+    if isfield(Header,'descrip')
+        headinfo=Header.descrip;
+        Df2=0;
+        if ~isempty(strfind(headinfo,'{T_['))% dong 100331 begin
+            Flag='T';
+            Tstart=strfind(headinfo,'{T_[')+length('{T_[');
+            Tend=strfind(headinfo,']}')-1;
+            Df1 = str2num(headinfo(Tstart:Tend));
+        elseif ~isempty(strfind(headinfo,'{F_['))
+            Flag='F';
+            Tstart=strfind(headinfo,'{F_[')+length('{F_[');
+            Tend=strfind(headinfo,']}')-1;
+            F_Df = str2num(headinfo(Tstart:Tend));
+            Df1=F_Df(1,1);
+            Df2=F_Df(1,2);
+        elseif ~isempty(strfind(headinfo,'{R_['))
+            Flag='R';
+            Tstart=strfind(headinfo,'{R_[')+length('{R_[');
+            Tend=strfind(headinfo,']}')-1;
+            Df1 = str2num(headinfo(Tstart:Tend));
+        elseif ~isempty(strfind(headinfo,'{Z_['))
+            Flag='Z';
+            Tstart=strfind(headinfo,'{Z_[')+length('{Z_[');
+            Tend=strfind(headinfo,']}')-1;
+            Df1 = str2num(headinfo(Tstart:Tend));
+        end
+    end
+end
+
+
 if strcmpi(Flag,'Z')
-    [dLh,resels,FWHM, nVoxels]=rest_Smoothest(StatsImgFile, MaskFile,VoxelSize);
+    DOF=''; %Degree of freedom for residual files
+    [dLh,resels,FWHM, nVoxels]=rest_Smoothest(StatsImgFile,MaskFile,DOF,VoxelSize);
 else
     if ~exist('Df2','var')
         Df2=0;
     end
     if strcmpi(OutputName,'DO NOT OUTPUT IMAGE')%Added by Sandy to make it compatible with Image matrix
         [Z_StatsImg P Header]=rest_TFRtoZ(StatsImgFile,OutputName,Flag,Df1,Df2,Header);
-        DF=''; %Degree of freedom for residual files
-        [dLh,resels,FWHM,nVoxels]=rest_Smoothest(Z_StatsImg,MaskFile,DF,VoxelSize);
+        DOF=''; %Degree of freedom for residual files
+        [dLh,resels,FWHM,nVoxels]=rest_Smoothest(Z_StatsImg,MaskFile,DOF,VoxelSize);
     else
         [Z P] = rest_TFRtoZ(StatsImgFile,[OutPath,filesep,'Z_BeforeThreshold_',OutName,OutExt],Flag,Df1,Df2);
         [dLh,resels,FWHM, nVoxels]=rest_Smoothest([OutPath,filesep,'Z_BeforeThreshold_',OutName,OutExt], MaskFile);

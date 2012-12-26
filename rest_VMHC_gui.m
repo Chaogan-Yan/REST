@@ -1079,7 +1079,10 @@ try
         if fisherz_tag && iscell(mPF_list)
             image_size=size(VMHCBrain);
             voxel_size=sqrt(sum(Header.mat(1:3,1:3).^2));
-            VMHCBrain=0.5 * log((1+VMHCBrain)./(1-VMHCBrain));
+
+            VMHCBrain(find(VMHCBrain >= 1)) = 1 - 1E-16; %YAN Chao-Gan, 121225. Supress the voxels with extremely high correlation values (e.g., have value of 1).
+            VMHCBrain = (0.5 * log((1 + VMHCBrain)./(1 - VMHCBrain)));
+
             rest_writefile(VMHCBrain,...
                 mPF_list{i},...
                 image_size,...

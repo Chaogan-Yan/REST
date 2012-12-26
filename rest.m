@@ -7,7 +7,7 @@ function varargout = rest(AOperation, varargin)
 %	http://resting-fmri.sourceforge.net
 % 	Mail to Authors:  <a href="Dawnwei.Song@gmail.com">SONG Xiao-Wei</a>; <a href="ycg.yan@gmail.com">YAN Chao-Gan</a>; <a href="dongzy08@gmail.com">DONG Zhang-Ye</a> 
 %	Version=1.8;
-%	Release=20120905;
+%	Release=20121225;
 %   Revised by YAN Chao-Gan 090321, added the fALFF module. Thank Dr. CHENG Wen-Lian for the helpful work.
 %   Revised by YAN Chao-Gan and DONG Zhang-Ye 091103, added the Utilities module. 
 %   Revised by YAN Chao-Gan, 091126. Checking and fixing the error of reading and writing NIfTI images when REST starts.

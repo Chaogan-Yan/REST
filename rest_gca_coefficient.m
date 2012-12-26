@@ -459,8 +459,8 @@ for i=1:size(ROI_sequence,1),
         Regressors1=[Past_1,Past_2,theCovariables];
         Regressors2=[Past_2,Past_1,theCovariables];
     end
-    b_1=rest_regress(Now(:,1),Regressors1);
-    b_2=rest_regress(Now(:,2),Regressors2);
+    b_1=rest_regress(Now(:,2),Regressors1);
+    b_2=rest_regress(Now(:,1),Regressors2);
     Result_X2Y(i,:)=b_1(1:Order*2);
     Result_Y2X(i,:)=b_2(1:Order*2);
 end
