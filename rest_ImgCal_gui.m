@@ -458,6 +458,9 @@ minlength=+inf;
 for j=1:length(dirg)
     cd(dirg{j});
     DirListg{j}=dir('*.img');
+    if isempty(DirListg{j})
+        DirListg{j}=dir('*.nii');
+    end
     minlength=min(minlength,length(DirListg{j}));
 end
 cd(olddir);
