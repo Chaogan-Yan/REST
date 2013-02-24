@@ -28,7 +28,7 @@ function [varargout]=rest_sliceviewer(AOperation, varargin)
 %   Modified by Sandy Wang and YAN Chao-Gan 120805: added "Correction motheds by Gaussian Random Field" (under Misc menu);
 %	Modified by Sandy Wang and YAN Chao-Gan 120805: Fixed a bug about display of "Misc" in GNU/Linux;
 %   Modified by Sandy Wang and YAN Chao-Gan 120805: added entry to change the range of dataset's display;
-
+%   Modified by YAN Chao-Gan 130224: Fixed the imresize_old bug in Matlab 2012b. Changed from imresize_old to imresize(X,Y,'nearest');
 
 if nargin<1, %No param Launch, 20070918
 	%help(mfilename);
@@ -1701,10 +1701,11 @@ function Result =SetView_Orthogonal(AConfig)
 	if license('test','image_toolbox')==1 && theMagnifyCoefficient~=1, 
         FullMatlabVersion = sscanf(version,'%d.%d.%d.%d%s');
         if FullMatlabVersion(1)*1000+FullMatlabVersion(2)>=7*1000+4    %YAN Chao-Gan, 101025. Fixed a bug when displaying in MATLAB 2010.
+        %   Modified by YAN Chao-Gan 130224: Fixed the imresize_old bug in Matlab 2012b. Changed from imresize_old to imresize(X,Y,'nearest');
         %if rest_misc('GetMatlabVersion')>=7.4   %YAN Chao-Gan 090401: The imresize function has been completely rewritten in Matlab R2007a. Fixed the bug of 'Set Overlay's Color bar' in Matlab R2007a or latter version.
-            theSagittalImg	=imresize_old(theSagittalImg, theMagnifyCoefficient);
-            theCoronalImg	=imresize_old(theCoronalImg, theMagnifyCoefficient);
-            theTransverseImg=imresize_old(theTransverseImg, theMagnifyCoefficient);
+            theSagittalImg	=imresize(theSagittalImg, theMagnifyCoefficient,'nearest');
+            theCoronalImg	=imresize(theCoronalImg, theMagnifyCoefficient,'nearest');
+            theTransverseImg=imresize(theTransverseImg, theMagnifyCoefficient,'nearest');
         else
             theSagittalImg	=imresize(theSagittalImg, theMagnifyCoefficient);
             theCoronalImg	=imresize(theCoronalImg, theMagnifyCoefficient);
@@ -1836,6 +1837,7 @@ function Result =SetView_Transverse(AConfig)
 	if license('test','image_toolbox')==1 && theMagnifyCoefficient~=1, 	
         FullMatlabVersion = sscanf(version,'%d.%d.%d.%d%s');
         if FullMatlabVersion(1)*1000+FullMatlabVersion(2)>=7*1000+4    %YAN Chao-Gan, 101025. Fixed a bug when displaying in MATLAB 2010.
+        %   Modified by YAN Chao-Gan 130224: Fixed the imresize_old bug in Matlab 2012b. Changed from imresize_old to imresize(X,Y,'nearest');
         %if rest_misc('GetMatlabVersion')>=7.4   %YAN Chao-Gan 090401: The imresize function has been completely rewritten in Matlab R2007a. Fixed the bug of 'Set Overlay's Color bar' in Matlab R2007a or latter version.
             sizetheTI=size(theTransverseImg);%Dong 091026
             if theMagnifyCoefficient<1
@@ -1844,7 +1846,7 @@ function Result =SetView_Transverse(AConfig)
                 sizeTI=[floor(sizetheTI(1)*theMagnifyCoefficient),floor(sizetheTI(2)*theMagnifyCoefficient)];%Dong 091026
             end
          
-            theTransverseImg=imresize_old(theTransverseImg,sizeTI);
+            theTransverseImg=imresize(theTransverseImg,sizeTI,'nearest');
         else
             sizetheTI=size(theTransverseImg);%Dong 091026
             if theMagnifyCoefficient<1
@@ -1965,6 +1967,7 @@ function Result =SetView_Sagittal(AConfig)
 	if license('test','image_toolbox')==1 && theMagnifyCoefficient~=1, 	
         FullMatlabVersion = sscanf(version,'%d.%d.%d.%d%s');
         if FullMatlabVersion(1)*1000+FullMatlabVersion(2)>=7*1000+4    %YAN Chao-Gan, 101025. Fixed a bug when displaying in MATLAB 2010.
+        %   Modified by YAN Chao-Gan 130224: Fixed the imresize_old bug in Matlab 2012b. Changed from imresize_old to imresize(X,Y,'nearest');
         %if rest_misc('GetMatlabVersion')>=7.4   %YAN Chao-Gan 090401: The imresize function has been completely rewritten in Matlab R2007a. Fixed the bug of 'Set Overlay's Color bar' in Matlab R2007a or latter version.
             sizetheTI=size(theSagittalImg);%Dong 091026
             if theMagnifyCoefficient<0.1
@@ -1972,7 +1975,7 @@ function Result =SetView_Sagittal(AConfig)
             else
                 sizeTI=[floor(sizetheTI(1)*theMagnifyCoefficient),floor(sizetheTI(2)*theMagnifyCoefficient)];%Dong 091026
             end
-             theSagittalImg=imresize_old( theSagittalImg,sizeTI);
+             theSagittalImg=imresize( theSagittalImg,sizeTI,'nearest');
         else
            sizetheTI=size(theSagittalImg);%Dong 091026
             if theMagnifyCoefficient<0.1
@@ -2093,6 +2096,7 @@ function Result =SetView_Coronal(AConfig)
 	if license('test','image_toolbox')==1 && theMagnifyCoefficient~=1, 		
         FullMatlabVersion = sscanf(version,'%d.%d.%d.%d%s');
         if FullMatlabVersion(1)*1000+FullMatlabVersion(2)>=7*1000+4    %YAN Chao-Gan, 101025. Fixed a bug when displaying in MATLAB 2010.
+        %   Modified by YAN Chao-Gan 130224: Fixed the imresize_old bug in Matlab 2012b. Changed from imresize_old to imresize(X,Y,'nearest');
         %if rest_misc('GetMatlabVersion')>=7.4   %YAN Chao-Gan 090401: The imresize function has been completely rewritten in Matlab R2007a. Fixed the bug of 'Set Overlay's Color bar' in Matlab R2007a or latter version.
             sizetheTI=size(theCoronalImg);%Dong 091026
             if theMagnifyCoefficient<1
@@ -2100,7 +2104,7 @@ function Result =SetView_Coronal(AConfig)
             else
                 sizeTI=[floor(sizetheTI(1)*theMagnifyCoefficient),floor(sizetheTI(2)*theMagnifyCoefficient)];%Dong 091026
             end
-            theCoronalImg=imresize_old(theCoronalImg,sizeTI);
+            theCoronalImg=imresize(theCoronalImg,sizeTI,'nearest');
         else
             sizetheTI=size(theCoronalImg);%Dong 091026
             if theMagnifyCoefficient<1
@@ -3189,14 +3193,15 @@ function Result =AddOverlay(AType, AConfig, ATrueColorUnderlay,theMagnifyCoeffic
 		if license('test','image_toolbox')==1,
             FullMatlabVersion = sscanf(version,'%d.%d.%d.%d%s');
             if FullMatlabVersion(1)*1000+FullMatlabVersion(2)>=7*1000+4    %YAN Chao-Gan, 101025. Fixed a bug when displaying in MATLAB 2010.
+            %   Modified by YAN Chao-Gan 130224: Fixed the imresize_old bug in Matlab 2012b. Changed from imresize_old to imresize(X,Y,'nearest');
             %if rest_misc('GetMatlabVersion')>=7.4   %YAN Chao-Gan 090401: The imresize function has been completely rewritten in Matlab R2007a. Fixed the bug of 'Set Overlay's Color bar' in Matlab R2007a or latter version.
                  switch lower(AType)
                     case 'sagittal',
-                        theOverlay =imresize_old(theOverlay, floor([(size(theOverlay, 1)-1)*Xvol+1, (size(theOverlay, 2)-1)*Xvol+1]*theMagnifyCoefficient));
+                        theOverlay =imresize(theOverlay, floor([(size(theOverlay, 1)-1)*Xvol+1, (size(theOverlay, 2)-1)*Xvol+1]*theMagnifyCoefficient),'nearest');
                     case 'coronal',
-                        theOverlay =imresize_old(theOverlay, floor([(size(theOverlay, 1)-1)*Yvol+1, (size(theOverlay, 2)-1)*Yvol+1]*theMagnifyCoefficient));
+                        theOverlay =imresize(theOverlay, floor([(size(theOverlay, 1)-1)*Yvol+1, (size(theOverlay, 2)-1)*Yvol+1]*theMagnifyCoefficient),'nearest');
                     case 'transverse',
-                        theOverlay =imresize_old(theOverlay, floor([(size(theOverlay, 1)-1)*Zvol+1, (size(theOverlay, 2)-1)*Zvol+1]*theMagnifyCoefficient));
+                        theOverlay =imresize(theOverlay, floor([(size(theOverlay, 1)-1)*Zvol+1, (size(theOverlay, 2)-1)*Zvol+1]*theMagnifyCoefficient),'nearest');
                     otherwise
                 end
             else
@@ -3341,14 +3346,15 @@ function Result =AddOverlaySeries(AConfig, ATrueColorUnderlay,theMagnifyCoeffici
 				if license('test','image_toolbox')==1,
                     FullMatlabVersion = sscanf(version,'%d.%d.%d.%d%s');
                     if FullMatlabVersion(1)*1000+FullMatlabVersion(2)>=7*1000+4    %YAN Chao-Gan, 101025. Fixed a bug when displaying in MATLAB 2010.
+                    %   Modified by YAN Chao-Gan 130224: Fixed the imresize_old bug in Matlab 2012b. Changed from imresize_old to imresize(X,Y,'nearest');
                     %if rest_misc('GetMatlabVersion')>=7.4   %YAN Chao-Gan 090401: The imresize function has been completely rewritten in Matlab R2007a. Fixed the bug of 'Set Overlay's Color bar' in Matlab R2007a or latter version.
                          switch lower(AConfig.ViewMode)
                             case 'sagittal',
-                                theOverlay =imresize_old(theOverlay, floor([(size(theOverlay, 1)-1)*Xvol+1, (size(theOverlay, 2)-1)*Xvol+1]*theMagnifyCoefficient));
+                                theOverlay =imresize(theOverlay, floor([(size(theOverlay, 1)-1)*Xvol+1, (size(theOverlay, 2)-1)*Xvol+1]*theMagnifyCoefficient),'nearest');
                             case 'coronal',
-                                theOverlay =imresize_old(theOverlay, floor([(size(theOverlay, 1)-1)*Yvol+1, (size(theOverlay, 2)-1)*Yvol+1]*theMagnifyCoefficient));
+                                theOverlay =imresize(theOverlay, floor([(size(theOverlay, 1)-1)*Yvol+1, (size(theOverlay, 2)-1)*Yvol+1]*theMagnifyCoefficient),'nearest');
                             case 'transverse',
-                                theOverlay =imresize_old(theOverlay, floor([(size(theOverlay, 1)-1)*Zvol+1, (size(theOverlay, 2)-1)*Zvol+1]*theMagnifyCoefficient));
+                                theOverlay =imresize(theOverlay, floor([(size(theOverlay, 1)-1)*Zvol+1, (size(theOverlay, 2)-1)*Zvol+1]*theMagnifyCoefficient),'nearest');
                             otherwise
                         end
                     else
@@ -4201,8 +4207,9 @@ function Result =DrawColorbar(AConfig)
 		theColormap =repmat(theColormap, [1 theColorbarWidth 1]);
         FullMatlabVersion = sscanf(version,'%d.%d.%d.%d%s');
         if FullMatlabVersion(1)*1000+FullMatlabVersion(2)>=7*1000+4    %YAN Chao-Gan, 101025. Fixed a bug when displaying in MATLAB 2010.
+        %   Modified by YAN Chao-Gan 130224: Fixed the imresize_old bug in Matlab 2012b. Changed from imresize_old to imresize(X,Y,'nearest');
         %if rest_misc('GetMatlabVersion')>=7.4   %YAN Chao-Gan 090401: The imresize function has been completely rewritten in Matlab R2007a. Fixed the bug of 'Set Overlay's Color bar' in Matlab R2007a or latter version.
-            theColormap =imresize_old(theColormap, [theColorBarPos(4), theColorbarWidth]);
+            theColormap =imresize(theColormap, [theColorBarPos(4), theColorbarWidth],'nearest');
         else
             theColormap =imresize(theColormap, [theColorBarPos(4), theColorbarWidth]);
         end

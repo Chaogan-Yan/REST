@@ -509,4 +509,6 @@ Fixed a waring in the latest MATLAB in "[pathstr, name, ext, versn] = fileparts.
     rest_NormalityTest_gui.fig
     rest_NormalityTest.m
 
-  
+
+%%%%%%%%%
+Please see further track changes on http://github.com/Chaogan-Yan/REST

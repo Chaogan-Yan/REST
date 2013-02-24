@@ -56,7 +56,7 @@ function [ResultMap1,ResultMap2] = rest_gca_coefficient(DataDir,AMaskFilename, A
 					end
 					theROITimeCourses(:, x) =tmpX;
 					IsDefinedROITimeCourse =1;
-				elseif strcmpi(ext, '.img')
+				elseif strcmpi(ext, '.img') || strcmpi(ext, '.nii') || strcmpi(ext, '.nii.gz')   %elseif strcmpi(ext, '.img')
 					%The ROI definition is a mask file
 					maskROI =rest_loadmask(nDim1, nDim2, nDim3, AROIDef{x});		
 				else
