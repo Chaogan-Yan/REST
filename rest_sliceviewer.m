@@ -3736,7 +3736,8 @@ function Result =Overlay_Misc(AConfig)
                 return
             end
             [BrainNetViewerPath, fileN, extn] = fileparts(which('BrainNet.m'));
-            SurfFileName=[BrainNetViewerPath,filesep,'Data',filesep,'SurfTemplate',filesep,'BrainMesh_ICBM152.nv'];
+            SurfFileName=[BrainNetViewerPath,filesep,'Data',filesep,'SurfTemplate',filesep,'BrainMesh_ICBM152_smoothed.nv']; %YAN Chao-Gan, 130303. Change the default surface template to the smoothed version.
+            %SurfFileName=[BrainNetViewerPath,filesep,'Data',filesep,'SurfTemplate',filesep,'BrainMesh_ICBM152.nv'];
             viewtype='MediumView';
 %             NMax = min(AConfig.Overlay.VolumeThrd(:));
 %             PMax = max(AConfig.Overlay.VolumeThrd(:));
@@ -3744,6 +3745,8 @@ function Result =Overlay_Misc(AConfig)
             NMax=AConfig.Overlay.MinNegative;
             PMax=AConfig.Overlay.MaxPositive;
             
+            % Citing Information
+            msgbox('The surface view is based on Mingrui Xia''s BrainNet Viewer. Please cite BrainNet Viewer (http://www.nitrc.org/projects/bnv/) when publishing.','Citing Information');
 
             H_BrainNet = rest_CallBrainNetViewer(AConfig.Overlay.VolumeThrd,-AConfig.Overlay.ValueThrdAbsolute,AConfig.Overlay.ValueThrdAbsolute,0,18,SurfFileName,viewtype,AConfig.Overlay.Colormap,NMax,PMax,AConfig.Overlay.Header);
             %H_BrainNet = rest_CallBrainNetViewer(BrainVolume,NMin,PMin,ClusterSize,ConnectivityCriterion,SurfFileName,viewtype,ColorMap,NMax,PMax,BrainHeader)
