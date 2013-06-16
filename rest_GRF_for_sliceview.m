@@ -237,5 +237,5 @@ function uipanel1_SelectionChangeFcn(hObject, eventdata, handles)
 
 is_two_tag=get(handles.Two_tail_radiobutton , 'Value');
 if is_two_tag
-   uiwait(msgbox('The "two-tailed" option is doing as following (e.g., if set VoxelPThreshold = 0.01 and cluster level p<0.05): 1) Get Group A > Group B, set Z>2.576 (two-tailed p <0.01) and cluster level p<0.025  2) Get Group A < Group B, set a Z<-2.576 (two-tailed p <0.01) and cluster level p<0.025.  3) Add 1 and 2 together, which could ensure the total p<0.5.','Two-tailed')); 
+   uiwait(msgbox('The "two-tailed" option is doing as following (e.g., if set VoxelPThreshold = 0.01 and cluster level p<0.05): 1) Get Group A > Group B, set Z>2.576 (two-tailed p <0.01) and cluster level p<0.025  2) Get Group A < Group B, set a Z<-2.576 (two-tailed p <0.01) and cluster level p<0.025.  3) Add 1 and 2 together, which could ensure the total p<0.05.','Two-tailed')); 
 end

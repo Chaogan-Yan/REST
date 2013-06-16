@@ -1,4 +1,4 @@
-function [Data_Corrected, ClusterSize, Header]=rest_GRF_Threshold(StatsImgFile,VoxelPThreshold,IsTwoTailed,ClusterPThreshold,OutputName,MaskFile,Flag,Df1,Df2,VoxelSize,Header)
+function [Data_Corrected, ClusterSize, Header]=rest_GRF_Threshold(StatsImgFile,VoxelPThreshold,IsTwoTailed,ClusterPThreshold,OutputName,MaskFile,Flag,Df1,Df2,VoxelSize,Header, dLh)
 % function [Data_Corrected, ClusterSize, Header]=y_GRF_Threshold(StatsImgFile,VoxelPThreshold,IsTwoTailed,ClusterPThreshold,OutputName,MaskFile,Flag,Df1,Df2,VoxelSize,Header)
 % Function to perform Gaussian Random Field theory multiple comparison correction like easythresh in FSL.
 % References:
@@ -18,6 +18,8 @@ function [Data_Corrected, ClusterSize, Header]=rest_GRF_Threshold(StatsImgFile,V
 %     Df2               - The second degree of freedom of F statistical image
 %     VoxelSize         - The Voxel's size of the image inputed. Defined when call by rest_sliceviewer.
 %     Header            - The Header of the nifti image.
+%     dLh               - Smoothness estimated as sqrt(det(Lambda)) with rest_Smoothest, will be used in inference. 
+%                         If this item is not provided, or is empty, then the smoothness will be estimated automatically from the statistical image (first convert to Z image).
 % Output:
 %     The image file (Z statistical image) after correction.
 %     Data_Corrected    - The Data matrix after correction
@@ -81,22 +83,27 @@ if (~exist('Flag','var')) || (exist('Flag','var') && isempty(Flag))
 end
 
 
-if strcmpi(Flag,'Z')
-    DOF=''; %Degree of freedom for residual files
-    [dLh,resels,FWHM, nVoxels]=rest_Smoothest(StatsImgFile,MaskFile,DOF,VoxelSize);
-else
-    if ~exist('Df2','var')
-        Df2=0;
-    end
-    if strcmpi(OutputName,'DO NOT OUTPUT IMAGE')%Added by Sandy to make it compatible with Image matrix
-        [Z_StatsImg P Header]=rest_TFRtoZ(StatsImgFile,OutputName,Flag,Df1,Df2,Header);
+%Added by YAN Chao-Gan 130508. If dLh is not provided, or is empty, then the smoothness will be estimated automatically from the statistical image (first convert to Z image).
+if (~exist('dLh','var')) || (exist('dLh','var') && isempty(dLh))
+ 
+    if strcmpi(Flag,'Z')
         DOF=''; %Degree of freedom for residual files
-        [dLh,resels,FWHM,nVoxels]=rest_Smoothest(Z_StatsImg,MaskFile,DOF,VoxelSize);
+        [dLh,resels,FWHM, nVoxels]=rest_Smoothest(StatsImgFile,MaskFile,DOF,VoxelSize);
     else
-        [Z P] = rest_TFRtoZ(StatsImgFile,[OutPath,filesep,'Z_BeforeThreshold_',OutName,OutExt],Flag,Df1,Df2);
-        [dLh,resels,FWHM, nVoxels]=rest_Smoothest([OutPath,filesep,'Z_BeforeThreshold_',OutName,OutExt], MaskFile);
+        if ~exist('Df2','var')
+            Df2=0;
+        end
+        if strcmpi(OutputName,'DO NOT OUTPUT IMAGE')%Added by Sandy to make it compatible with Image matrix
+            [Z_StatsImg P Header]=rest_TFRtoZ(StatsImgFile,OutputName,Flag,Df1,Df2,Header);
+            DOF=''; %Degree of freedom for residual files
+            [dLh,resels,FWHM,nVoxels]=rest_Smoothest(Z_StatsImg,MaskFile,DOF,VoxelSize);
+        else
+            [Z P] = rest_TFRtoZ(StatsImgFile,[OutPath,filesep,'Z_BeforeThreshold_',OutName,OutExt],Flag,Df1,Df2);
+            [dLh,resels,FWHM, nVoxels]=rest_Smoothest([OutPath,filesep,'Z_BeforeThreshold_',OutName,OutExt], MaskFile);
+        end
     end
 end
+
 
 if IsTwoTailed
     zThrd=norminv(1 - VoxelPThreshold/2);

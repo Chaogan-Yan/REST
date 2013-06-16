@@ -32,6 +32,7 @@ else
     [Group1Series, VoxelSize, Header] =rest_readfile(Group1Dir); %dong 100530
     [Group2ConSeries, VoxelSize, Header] =rest_readfile(Group2Dir);
     ImgFileList=1;
+    nVolumn=1; %YAN Chao-Gan, 130423
 end
 
 cd(olddir);
@@ -71,7 +72,7 @@ pGroup=zeros(size(Group1Series,1),size(Group1Series,2),size(Group1Series,3));
 rest_waitbar;
 %for i=1:nVolumn
             %[r p]=corrcoef(squeeze(Group1Series(i,:,:,:)),squeeze(Group2ConSeries(i,:,:,:)));
-for i=1:nVolumn
+for i=1:size(Group1Series,1) %YAN Chao-Gan, 20130423. ZHANG Han found this bug.
     rest_waitbar(i/size(Group1Series,1),'Computing','Computing','Parent');
     for j=1:size(Group1Series,2)
         for k=1:size(Group1Series,3)

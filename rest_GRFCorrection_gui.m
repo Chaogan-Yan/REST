@@ -184,17 +184,17 @@ end
 
 
 function cluster_entry_Callback(hObject, eventdata, handles)
-% hObject    handle to cluster_entry (see GCBO)
+% hObject    handle to voxel_entry (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of cluster_entry as text
-%        str2double(get(hObject,'String')) returns contents of cluster_entry as a double
+% Hints: get(hObject,'String') returns contents of voxel_entry as text
+%        str2double(get(hObject,'String')) returns contents of voxel_entry as a double
 
 
 % --- Executes during object creation, after setting all properties.
 function cluster_entry_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to cluster_entry (see GCBO)
+% hObject    handle to voxel_entry (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -252,8 +252,8 @@ if isempty(get(handles.voxel_entry , 'String'))
     check_tag=1;
 end
 
-if isempty(get(handles.cluster_entry , 'String'))
-    check_warning(handles.cluster_entry);
+if isempty(get(handles.voxel_entry , 'String'))
+    check_warning(handles.voxel_entry);
     check_tag=1;
 end
 
@@ -348,5 +348,5 @@ function tail_panel_SelectionChangeFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 is_two_tag=get(handles.two_tail , 'Value');
 if is_two_tag
-   uiwait(msgbox('The "two-tailed" option is doing as following (e.g., if set VoxelPThreshold = 0.01 and cluster level p<0.05): 1) Get Group A > Group B, set Z>2.576 (two-tailed p <0.01) and cluster level p<0.025  2) Get Group A < Group B, set a Z<-2.576 (two-tailed p <0.01) and cluster level p<0.025.  3) Add 1 and 2 together, which could ensure the total p<0.5.','Two-tailed')); 
+   uiwait(msgbox('The "two-tailed" option is doing as following (e.g., if set VoxelPThreshold = 0.01 and cluster level p<0.05): 1) Get Group A > Group B, set Z>2.576 (two-tailed p <0.01) and cluster level p<0.025  2) Get Group A < Group B, set a Z<-2.576 (two-tailed p <0.01) and cluster level p<0.025.  3) Add 1 and 2 together, which could ensure the total p<0.05.','Two-tailed')); 
 end
